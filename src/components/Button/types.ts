@@ -1,9 +1,6 @@
 import { type ButtonHTMLAttributes } from "react";
+import { type Interpolation } from "styled-components";
 
-export enum ButtonColorsSchemes {
-    DEFAULT = 'default',
-    GREEN = 'green',
-    RED = 'red'
-}
+type ColorsSchemes = 'default' | 'green' | 'red'
 
-export type ButtonProps = Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick' | 'children' | 'disabled'> & Partial<{ colorScheme: ButtonColorsSchemes }>
+export type ButtonProps = Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick' | 'children' | 'disabled'> & Partial<{ colorScheme: ColorsSchemes; styles: Interpolation<React.CSSProperties> }>

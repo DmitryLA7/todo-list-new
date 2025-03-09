@@ -1,12 +1,9 @@
 "use client";
 
-import { Button, Card, InputWithButton, Layout, Title } from "@/components";
-import Todo from "@/components/Todo";
-
-import { ButtonColorsSchemes } from "@/components/Button/types";
+import { Card, Filters, InputWithButton, Layout, Title } from "@/components";
+import TodoList from "@/components/TodoList";
 
 import { Page, PageTitle } from "./styles";
-import TodoList from "@/components/TodoList";
 
 export default function Home() {
   return (
@@ -18,6 +15,7 @@ export default function Home() {
         <Card>
           <InputWithButton />
         </Card>
+        <Filters />
         <TodoList />
       </Layout>
     </Page>

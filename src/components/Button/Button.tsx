@@ -1,16 +1,17 @@
 "use client";
 
-import { ButtonColorsSchemes, type ButtonProps } from "./types";
+import type { ButtonProps } from "./types";
 
 import { StyledButton } from "./styles";
 
 const Button = ({
   children,
-  colorScheme = ButtonColorsSchemes.DEFAULT,
+  colorScheme = "default",
+  styles,
   ...props
 }: ButtonProps) => {
   return (
-    <StyledButton {...props} $colorScheme={colorScheme}>
+    <StyledButton {...props} $colorScheme={colorScheme} $styles={styles}>
       {children}
     </StyledButton>
   );

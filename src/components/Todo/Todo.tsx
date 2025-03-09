@@ -1,7 +1,8 @@
 import Title from "../Title";
 import { TodoControls } from "../Widgets";
 
-import { TodoProps, TodoStatus } from "./types";
+import { TodoStatus } from "@/types/todo";
+import type { TodoProps } from "./types";
 
 import {
   Description,
@@ -10,17 +11,22 @@ import {
   StyledTodo,
   Wrapper,
 } from "./styles";
+import { ResizableInput } from "../Inputs";
 
-const Todo = ({ id, description, status }: TodoProps) => {
+const Todo = ({ id, description, status, isEdited }: TodoProps) => {
   return (
     <Wrapper>
       <StyledTodo>
         <Title level="h2">Сегодня</Title>
         <DescriptionWrapper>
           <StatusButton $status={status} />
-          <Description $status={TodoStatus.NOT_DONE} $active>
-            {description}
-          </Description>
+          {isEdited ? (
+            <ResizableInput />
+          ) : (
+            <Description $status={TodoStatus.NOT_DONE} $active>
+              {description}
+            </Description>
+          )}
         </DescriptionWrapper>
       </StyledTodo>
       <TodoControls />

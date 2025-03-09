@@ -1,8 +1,3 @@
-export enum TodoStatus {
-    DONE = 'done',
-    NOT_DONE = 'not_done'
-}
+import type { TodoType } from "@/types/todo";
 
-export type TodoType = { id: number; description: string; status: TodoStatus; }
-
-export type TodoProps = TodoType
+export type TodoProps = TodoType & { isEdited: boolean }

@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-import { TodoStatus } from "./types";
+import type { TodoStatus } from "@/types/todo";
 
 export const Wrapper = styled.div`
     display: flex;

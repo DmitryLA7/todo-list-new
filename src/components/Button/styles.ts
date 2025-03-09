@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 
-import type { ButtonColorsSchemes } from "./types";
+import type { ButtonProps } from "./types";
 
-const SCHEMES: Record<ButtonColorsSchemes, ReturnType<typeof css>> = {
+const SCHEMES: Record<NonNullable<ButtonProps['colorScheme']>, ReturnType<typeof css>> = {
   default: css`
     border-color: #30324B;
     color: '#30324B';
@@ -65,7 +65,7 @@ const SCHEMES: Record<ButtonColorsSchemes, ReturnType<typeof css>> = {
   `
 }
 
-export const StyledButton = styled.button<{ $colorScheme: ButtonColorsSchemes; }>`
+export const StyledButton = styled.button<{ $colorScheme: NonNullable<ButtonProps['colorScheme']>; $styles?: ButtonProps['styles'] }>`
   padding: 10px 15px;
   background-color: transparent;
   border: 2px solid;
@@ -81,4 +81,5 @@ export const StyledButton = styled.button<{ $colorScheme: ButtonColorsSchemes; }
   }
 
   ${(props) => SCHEMES[props.$colorScheme]}
+  ${(props) => props.$styles}
 `;
