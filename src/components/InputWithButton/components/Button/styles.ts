@@ -1,10 +1,9 @@
 
 import styled from "styled-components";
 
+import { device } from "@/styles/breakpoints";
+
 export const StyledButton = styled.button`
-    position: absolute;
-    top: 0;
-    right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,6 +16,18 @@ export const StyledButton = styled.button`
     border-radius: 6px;
     outline: none;
     cursor: pointer;
+    
+    @media ${device.tablet} {
+      min-width: 60px;
+      max-width: 60px;
+      min-height: 50px;
+      max-height: 50px;
+
+      > svg {
+        width: 30px;
+        height: 30px;
+      }
+    }
 
     &:active, &:hover, &:focus {
         color: #fff;
@@ -34,4 +45,5 @@ export const StyledButton = styled.button`
       background-color: #30324B;
       border-color: #A4A4A4;
     }
+
 `
