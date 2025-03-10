@@ -1,4 +1,4 @@
-import { type FormEvent, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import { Wrapper, Buffer, Input } from "./styles";
 
@@ -9,16 +9,15 @@ const ResizableInput = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const bufferRef = useRef<HTMLDivElement>(null);
 
-  const onInput = (e: FormEvent<HTMLInputElement>) => {
+  useLayoutEffect(() => {
     if (bufferRef.current) setWidth(bufferRef.current?.clientWidth);
-  };
+  }, [text]);
 
   return (
     <Wrapper>
       <Input
         ref={inputRef}
         placeholder="test"
-        onInput={onInput}
         onChange={(e) => setText(e.target.value)}
         $width={width}
       />
