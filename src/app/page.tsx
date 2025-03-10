@@ -3,19 +3,19 @@
 import { Card, Filters, InputWithButton, Layout, Title } from "@/components";
 import TodoList from "@/components/TodoList";
 
-import { Page, PageTitle } from "./styles";
+import { addTodo, Page, pageTitle, filters } from "./styles";
 
 export default function Home() {
   return (
     <Page>
       <Layout>
-        <Title level="h1" styles={PageTitle}>
+        <Title level="h1" styles={pageTitle}>
           Список дел
         </Title>
-        <Card>
+        <Card styles={addTodo}>
           <InputWithButton />
         </Card>
-        <Filters />
+        <Filters styles={filters} />
         <TodoList />
       </Layout>
     </Page>

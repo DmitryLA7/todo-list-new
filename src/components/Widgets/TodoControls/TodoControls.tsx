@@ -1,11 +1,13 @@
 import { Delete, Edit } from "@/assets/svg";
 
+import type { TodoControlsProps } from "./types";
+
 import { Button, Wrapper } from "./styles";
 
-const TodoControls = () => {
+const TodoControls = ({ id, isEdited }: TodoControlsProps) => {
   return (
     <Wrapper>
-      <Button $type="save">Сохранить</Button>
+      {isEdited ? <Button $type="save">Сохранить</Button> : null}
       <Button $type="edit">
         <Edit />
       </Button>

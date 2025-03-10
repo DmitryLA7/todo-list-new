@@ -11,7 +11,15 @@ export const Page = styled.div`
     }
 `
 
-export const PageTitle = css`
+export const pageTitle = css`
     margin-bottom: 17px;
     text-align: center;
+`
+
+export const addTodo = css`
+    margin-bottom: 30px;
+`
+
+export const filters = css`
+    margin-bottom: 20px;
 `

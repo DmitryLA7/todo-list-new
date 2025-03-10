@@ -29,7 +29,7 @@ const Todo = ({ id, description, status, isEdited }: TodoProps) => {
           )}
         </DescriptionWrapper>
       </StyledTodo>
-      <TodoControls />
+      <TodoControls id={id} isEdited={isEdited} />
     </Wrapper>
   );
 };

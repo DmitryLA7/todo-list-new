@@ -1,3 +1,3 @@
 import type { TodoType } from "@/types/todo";
 
-export type TodoControlsProps = Pick<TodoType, 'id'>
+export type TodoControlsProps = Pick<TodoType, 'id'> & { isEdited: boolean }

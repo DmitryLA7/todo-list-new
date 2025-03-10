@@ -6,6 +6,6 @@ export const StyledLayout = styled.div`
 `
 export const Container = styled.main`
     margin: auto;
-    padding: ${PADDINGS.sm}px;
+    padding: 0 ${PADDINGS.sm}px;
     max-width: ${CONTAINERS.xl}px;
 `

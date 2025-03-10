@@ -7,9 +7,12 @@ export const Wrapper = styled.div`
 
 export const Input = styled.input<{ $width: number }>`
     border: none;
+    border-bottom: 1px solid;
+    border-color: #878787;
     outline: none;
     min-width: 100px;
     max-width: 100%;
+    font-size: 16px;
     width: ${props => props.$width}px;
 `
 
