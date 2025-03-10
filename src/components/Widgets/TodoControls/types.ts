@@ -1,3 +1,1 @@
-import type { TodoType } from "@/types/todo";
-
-export type TodoControlsProps = Pick<TodoType, 'id'> & { isEdited: boolean }
+export type TodoControlsProps = { isEdited: boolean; onEdit: () => void; onDone: () => void; onDelete: () => void }

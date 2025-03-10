@@ -1,9 +1,10 @@
 import { useLayoutEffect, useRef, useState } from "react";
 
+import { ResizableInputProps } from "./types";
+
 import { Wrapper, Buffer, Input } from "./styles";
 
-const ResizableInput = () => {
-  const [text, setText] = useState("");
+const ResizableInput = ({ value, onChangeValue }: ResizableInputProps) => {
   const [width, setWidth] = useState(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -11,17 +12,18 @@ const ResizableInput = () => {
 
   useLayoutEffect(() => {
     if (bufferRef.current) setWidth(bufferRef.current?.clientWidth);
-  }, [text]);
+  }, [value]);
 
   return (
     <Wrapper>
       <Input
         ref={inputRef}
         placeholder="test"
-        onChange={(e) => setText(e.target.value)}
+        value={value}
+        onChange={(e) => onChangeValue(e.target.value)}
         $width={width}
       />
-      <Buffer ref={bufferRef}>{text}</Buffer>
+      <Buffer ref={bufferRef}>{value}</Buffer>
     </Wrapper>
   );
 };

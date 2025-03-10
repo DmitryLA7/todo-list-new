@@ -1,0 +1,1 @@
+export type InputWithButtonProps = Pick<HTMLInputElement, 'placeholder'> & { onAdd: (text: string) => void }

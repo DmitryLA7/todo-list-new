@@ -1,3 +1,3 @@
 import type { TodoType } from "@/types/todo";
 
-export type TodoProps = TodoType & { isEdited: boolean }
+export type TodoProps = TodoType

@@ -1,7 +1,14 @@
+import { useState } from "react";
+import { useAppDispatch } from "@/store";
+import {
+  todoDeleted,
+  toggleDescription,
+  toggleStatus,
+} from "@/store/features/todos/todosSlice";
+
 import Title from "../Title";
 import { TodoControls } from "../Widgets";
 
-import { TodoStatus } from "@/types/todo";
 import type { TodoProps } from "./types";
 
 import {
@@ -13,23 +20,39 @@ import {
 } from "./styles";
 import { ResizableInput } from "../Inputs";
 
-const Todo = ({ id, description, status, isEdited }: TodoProps) => {
+const Todo = ({ id, description, status }: TodoProps) => {
+  const [edited, setEdited] = useState(false);
+  const [draftDescr, setDraftDescr] = useState(description);
+
+  const dispatch = useAppDispatch();
+
+  const onDone = () => {
+    setEdited(false);
+    dispatch(toggleDescription({ id, description: draftDescr }));
+  };
+
   return (
     <Wrapper>
       <StyledTodo>
         <Title level="h2">Сегодня</Title>
         <DescriptionWrapper>
-          <StatusButton $status={status} />
-          {isEdited ? (
-            <ResizableInput />
+          <StatusButton
+            $status={status}
+            onClick={() => dispatch(toggleStatus(id))}
+          />
+          {edited ? (
+            <ResizableInput value={draftDescr} onChangeValue={setDraftDescr} />
           ) : (
-            <Description $status={TodoStatus.NOT_DONE} $active>
-              {description}
-            </Description>
+            <Description $status={status}>{description}</Description>
           )}
         </DescriptionWrapper>
       </StyledTodo>
-      <TodoControls id={id} isEdited={isEdited} />
+      <TodoControls
+        isEdited={edited}
+        onEdit={() => setEdited((e) => !e)}
+        onDone={onDone}
+        onDelete={() => dispatch(todoDeleted(id))}
+      />
     </Wrapper>
   );
 };

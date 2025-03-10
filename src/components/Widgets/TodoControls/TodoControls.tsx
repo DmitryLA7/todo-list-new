@@ -4,14 +4,23 @@ import type { TodoControlsProps } from "./types";
 
 import { Button, Wrapper } from "./styles";
 
-const TodoControls = ({ id, isEdited }: TodoControlsProps) => {
+const TodoControls = ({
+  isEdited,
+  onEdit,
+  onDone,
+  onDelete,
+}: TodoControlsProps) => {
   return (
     <Wrapper>
-      {isEdited ? <Button $type="save">Сохранить</Button> : null}
-      <Button $type="edit">
+      {isEdited ? (
+        <Button $type="save" onClick={onDone}>
+          Сохранить
+        </Button>
+      ) : null}
+      <Button $type="edit" onClick={onEdit}>
         <Edit />
       </Button>
-      <Button $type="delete">
+      <Button $type="delete" onClick={onDelete}>
         <Delete />
       </Button>
     </Wrapper>

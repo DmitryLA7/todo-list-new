@@ -18,6 +18,7 @@ export const DescriptionWrapper = styled.div`
     display: flex;
     column-gap: 30px;
     align-items: center;
+    overflow: hidden;
 `
 
 export const StatusButton = styled.button<{ $status: TodoStatus; }>`
@@ -50,12 +51,8 @@ const BUTTON_STATUS: Partial<{ [key in TodoStatus]: ReturnType<typeof css> }> = 
     `
 }
 
-export const Description = styled.div<{ $status: TodoStatus; $active: boolean }>`
+export const Description = styled.div<{ $status: TodoStatus }>`
     ${props => DESCRIPTION_STATUS[props.$status]}
-    ${props => props.$active ? css`
-        border-bottom: 1px solid;
-        border-color: #878787;
-    ` : ``}
 `
 
 const DESCRIPTION_STATUS: Partial<{ [key in TodoStatus]: ReturnType<typeof css> }> = {
