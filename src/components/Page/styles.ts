@@ -31,6 +31,7 @@ export const Sticky = styled.div`
     padding-bottom: 20px;
     background: #fff;
     width: calc(100% + ${PADDINGS.sm * 2}px);
+    z-index: 2;
 
     @media ${device.tablet} { 
         margin-top: -${PADDINGS.xl}px;
