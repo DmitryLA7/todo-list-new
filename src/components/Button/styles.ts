@@ -12,15 +12,16 @@ const SCHEMES: Record<NonNullable<ButtonProps['colorScheme']>, ReturnType<typeof
       color: #fff;
     };
 
-    &:hover {
-      background-color: #575A84;
-      color: #fff;
-    }
-
-    &:focus {
-      background-color: #30324B;
-      border-color: #A4A4A4;
-      color: #fff;
+    &:not(:active) {
+      &:focus {
+        background-color: #30324B;
+        border-color: #A4A4A4;
+        color: #fff;
+      }
+      &:hover {
+        background-color: #575A84;
+        color: #fff;
+      }
     }
   `,
   green: css`
@@ -32,35 +33,39 @@ const SCHEMES: Record<NonNullable<ButtonProps['colorScheme']>, ReturnType<typeof
       color: #fff;
     };
 
-    &:hover {
-      background-color: #CEFF9D;
-      color: #6AD400;
-    }
+    &:not(:active) {
+      &:hover {
+        background-color: #CEFF9D;
+        color: #6AD400;
+      }
 
-    &:focus {
-      background-color: #6AD400;
-      border-color: #CEFF9D;
-      color: #fff;
+      &:focus {
+        background-color: #6AD400;
+        border-color: #CEFF9D;
+        color: #fff;
+      }
     }
   `,
   red: css`
     border-color: #FF2F2F;
     color: #FF2F2F;
 
-    &:active, &:target {
+    &:active {
       background-color: #FF2F2F;
       color: #fff;
     };
 
-    &:hover {
-      background-color: #FFB8B8;
-      color: #FF2F2F;
-    }
+    &:not(:active) {
+      &:hover {
+        background-color: #FFB8B8;
+        color: #FF2F2F;
+      }
 
-    &:focus {
-      background-color: #FF2F2F;
-      border-color: #FFB8B8;
-      color: #fff;
+      &:focus {
+        background-color: #FF2F2F;
+        border-color: #FFB8B8;
+        color: #fff;
+      }
     }
   `
 }

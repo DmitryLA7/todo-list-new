@@ -9,3 +9,6 @@ export { default as TodoList } from './TodoList'
 
 // Widgets
 export * from './Widgets'
+
+// Pages
+export {default as Page} from './Page'

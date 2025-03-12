@@ -32,6 +32,9 @@ const todosSlice = createSlice({
 
             if (todo)
                 todo.description = action.payload.description
+        },
+        setTodosList(state, action: PayloadAction<TodoType[]>) {
+            return state = action.payload
         }
     },
 })
@@ -40,5 +43,5 @@ const findTodo = (todo: TodoType) => (id: TodoType['id']) => todo.id === id
 
 export const selectTodos = (state: RootState) => state.todos
 
-export const { todoAdded, toggleStatus, todoDeleted, toggleDescription } = todosSlice.actions
+export const { todoAdded, toggleStatus, todoDeleted, toggleDescription, setTodosList } = todosSlice.actions
 export default todosSlice.reducer
