@@ -1,10 +1,11 @@
 import {
-  MouseEvent,
-  PropsWithChildren,
-  RefObject,
+  type MouseEvent as SynteticMouseEvent,
+  type PropsWithChildren,
   useRef,
   useState,
+  type MouseEvent,
 } from "react";
+
 import { StyledDraggable } from "./styles";
 
 const INIT_COORDS = {
@@ -12,60 +13,92 @@ const INIT_COORDS = {
   y: 0,
 } as const;
 
-const Draggable = ({
+const Draggable = <Items extends unknown[]>({
   children,
-  containerRef,
-}: PropsWithChildren<{ containerRef: RefObject<HTMLDivElement | null> }>) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isCaptured, setIsCaptured] = useState(false);
+  index,
+  toggleItems,
+}: PropsWithChildren<{
+  index: number;
+  toggleItems: (callback: (t: Items) => Items) => void;
+}>) => {
+  const [isDragging, setIsDragging] = useState(false);
   const [coords, setCoords] = useState<{ x: number; y: number }>(INIT_COORDS);
+  const ref = useRef<HTMLDivElement>(null);
+  const initElementCoordsRef = useRef<{ x: number; y: number }>(INIT_COORDS);
 
-  const onMouseDown = ({ clientX, clientY }: MouseEvent<HTMLDivElement>) => {
+  const onMouseDown = ({
+    pageX,
+    pageY,
+  }: SynteticMouseEvent<HTMLDivElement>) => {
+    if (window.getSelection()?.toString()) return;
+
+    initElementCoordsRef.current = { x: pageX, y: pageY };
     toggleCaptured();
-
-    const onMouseMove = ({ pageX, pageY }: MouseEvent) => {
-      if (ref.current) {
-        setCoords({
-          x: pageX - clientX,
-          y: pageY - clientY,
-        });
-      }
-    };
-
-    document.addEventListener("mousemove", onMouseMove);
   };
 
-  const toggleCaptured = () => setIsCaptured((p) => !p);
+  const onMouseMove = ({ pageX, pageY }: MouseEvent) => {
+    if (!isDragging) return;
+    const nextSibling = ref.current?.nextSibling as HTMLElement;
+    const prevSibling = ref.current?.previousSibling as HTMLElement;
 
-  //   const onMouseMove = ({ pageX, pageY }: MouseEvent) => {
-  //     setCoords({ x: pageX - (clientX - left), y: pageX - (clientY - top) });
-  //   };
-  //   console.log(coords);
+    if (
+      nextSibling &&
+      isOffsetToMiddleOfSibling(nextSibling)((v) => pageY >= v)
+    ) {
+      updateYAxisOffset(pageY);
+      toggleItems(
+        (p) => p.toSpliced(index, 2, p[index + 1], p[index]) as Items
+      );
+    } else if (
+      prevSibling &&
+      isOffsetToMiddleOfSibling(prevSibling)((v) => pageY <= v)
+    ) {
+      updateYAxisOffset(pageY);
+      toggleItems(
+        (p) => p.toSpliced(index - 1, 2, p[index], p[index - 1]) as Items
+      );
+    }
+
+    setCoords({
+      x: pageX - initElementCoordsRef.current.x,
+      y: pageY - initElementCoordsRef.current.y,
+    });
+  };
+
+  const isOffsetToMiddleOfSibling =
+    (sibling: HTMLElement) => (validatior: (n: number) => boolean) =>
+      validatior(sibling.offsetTop + sibling.clientHeight / 2);
+
+  const updateYAxisOffset = (y: number) => {
+    initElementCoordsRef.current = {
+      x: initElementCoordsRef.current.x,
+      y,
+    };
+  };
+
+  const toggleCaptured = () => setIsDragging((p) => !p);
+
   const onMouseUp = () => {
+    resetDrag();
+  };
+
+  const resetDrag = () => {
+    if (window.getSelection()?.toString()) return;
+
+    initElementCoordsRef.current = INIT_COORDS;
+
     toggleCaptured();
     setCoords(INIT_COORDS);
-    // document.removeEventListener("mousemove", onMouseMove);
   };
-
-  //   useEffect(() => {
-  //     document.addEventListener("mousemove", onMouseMove);
-  //     document.addEventListener("mouseup", onMouseUp);
-
-  //     return () => {
-  //       document.removeEventListener("mousedown", onMouseMove);
-  //       document.addEventListener("mouseup", onMouseUp);
-  //     };
-  //   }, [isCaptured]);
 
   return (
     <StyledDraggable
       ref={ref}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
-      onDrag={(e) => {
-        e.preventDefault();
-      }}
-      $captured={isCaptured}
+      onDrag={onMouseDown}
+      onMouseMove={onMouseMove}
+      $captured={isDragging}
       $x={coords.x}
       $y={coords.y}
     >
