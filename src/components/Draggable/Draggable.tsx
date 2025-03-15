@@ -1,13 +1,8 @@
-import {
-  type MouseEvent as SynteticMouseEvent,
-  type PropsWithChildren,
-  useRef,
-  useState,
-  type MouseEvent,
-  useEffect,
-} from "react";
+import { type PropsWithChildren, useRef, useState } from "react";
+import Image from "next/image";
 
-import { StyledDraggable } from "./styles";
+import iconDrag from "@/assets/png/icon-drag.png";
+import { IconDrag, StyledDraggable } from "./styles";
 
 const INIT_COORDS = {
   x: 0,
@@ -30,7 +25,6 @@ const Draggable = <Items extends unknown[]>({
   const [coords, setCoords] = useState<{ x: number; y: number }>(INIT_COORDS);
   const ref = useRef<HTMLDivElement>(null);
   const initElementCoordsRef = useRef<{ x: number; y: number }>(INIT_COORDS);
-  const timerRef = useRef<NodeJS.Timeout>(null);
 
   const onDragStart = ({ pageX, pageY }: { pageX: number; pageY: number }) => {
     if (window.getSelection()?.toString() || dragBlocked) return;
@@ -93,58 +87,14 @@ const Draggable = <Items extends unknown[]>({
     setCoords(INIT_COORDS);
   };
 
-  useEffect(() => {
-    if (isDragging && !dragBlocked) {
-      window.addEventListener("touchmove", preventTouchScroll, {
-        passive: false,
-      });
-
-      return () => {
-        window.removeEventListener("touchmove", preventTouchScroll);
-      };
-    }
-  }, [isDragging, dragBlocked]);
-
-  const preventTouchScroll = (e: TouchEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    return false;
-  };
-
-  const handleToucheStart = ({
-    pageX,
-    pageY,
-  }: {
-    pageX: number;
-    pageY: number;
-  }) => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-
-    timerRef.current = setTimeout(() => {
-      console.log("lets roll");
-      onDragStart({ pageX, pageY });
-    }, 300);
-  };
-
-  useEffect(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-  }, [dragBlocked]);
-
   return (
     <StyledDraggable
       ref={ref}
       onMouseDown={onDragStart}
-      onTouchStart={(e) =>
-        handleToucheStart({
-          pageX: e.touches[0].pageX,
-          pageY: e.touches[0].pageY,
-        })
-      }
-      onMouseMove={isDragging ? onDragMove : undefined}
       onTouchMove={(e) => {
         onDragMove({ pageX: e.touches[0].pageX, pageY: e.touches[0].pageY });
       }}
+      onMouseMove={isDragging ? onDragMove : undefined}
       onTouchEnd={handleOnDragEnd}
       onMouseUp={handleOnDragEnd}
       onMouseLeave={handleOnDragEnd}
@@ -153,6 +103,16 @@ const Draggable = <Items extends unknown[]>({
       $y={coords.y}
     >
       {children}
+      <IconDrag
+        onTouchStart={(e) =>
+          onDragStart({
+            pageX: e.touches[0].pageX,
+            pageY: e.touches[0].pageY,
+          })
+        }
+      >
+        <Image layout="fixed" alt="" src={iconDrag} width={19} height={19} />
+      </IconDrag>
     </StyledDraggable>
   );
 };
