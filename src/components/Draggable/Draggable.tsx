@@ -17,9 +17,11 @@ const Draggable = <Items extends unknown[]>({
   children,
   index,
   toggleItems,
+  onDragEnd,
 }: PropsWithChildren<{
   index: number;
   toggleItems: (callback: (t: Items) => Items) => void;
+  onDragEnd: () => void;
 }>) => {
   const [isDragging, setIsDragging] = useState(false);
   const [coords, setCoords] = useState<{ x: number; y: number }>(INIT_COORDS);
@@ -35,6 +37,8 @@ const Draggable = <Items extends unknown[]>({
     initElementCoordsRef.current = { x: pageX, y: pageY };
     toggleCaptured();
   };
+
+  const toggleCaptured = () => setIsDragging((p) => !p);
 
   const onMouseMove = ({ pageX, pageY }: MouseEvent) => {
     if (!isDragging) return;
@@ -76,10 +80,9 @@ const Draggable = <Items extends unknown[]>({
     };
   };
 
-  const toggleCaptured = () => setIsDragging((p) => !p);
-
   const onMouseUp = () => {
     resetDrag();
+    onDragEnd();
   };
 
   const resetDrag = () => {

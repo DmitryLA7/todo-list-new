@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-import { useAppSelector } from "@/store";
-import { selectTodos } from "@/store/features/todos/todosSlice";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { selectTodos, setTodosList } from "@/store/features/todos/todosSlice";
 
 import Card from "../Card";
 import Todo from "../Todo";
 import Draggable from "../Draggable";
+
+import TodoListData from "@/utils/todoData";
 
 import type { TodoListProps } from "./types";
 
@@ -13,6 +15,7 @@ import { Wrapper } from "./styles";
 
 const TodoList = ({ filter }: TodoListProps) => {
   const todos = useAppSelector(selectTodos);
+  const dispatch = useAppDispatch();
 
   const [draft, setDraft] = useState<typeof todos>([]);
 
@@ -25,6 +28,13 @@ const TodoList = ({ filter }: TodoListProps) => {
   const toggleDraft = (callback: (t: typeof todos) => typeof todos) =>
     setDraft(callback);
 
+  const onDragEnd = () => {
+    if (todos !== draft) {
+      TodoListData.writeToStorage(todos);
+      dispatch(setTodosList(draft));
+    }
+  };
+
   const filtred = filter
     ? draft.filter(({ status }) => status === filter)
     : draft;
@@ -36,6 +46,7 @@ const TodoList = ({ filter }: TodoListProps) => {
           key={id}
           index={index}
           toggleItems={toggleDraft}
+          onDragEnd={onDragEnd}
         >
           <Card>
             <Todo id={id} description={description} status={status} />
