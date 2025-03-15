@@ -41,15 +41,19 @@ const TodoList = ({ filter }: TodoListProps) => {
 
   return (
     <Wrapper ref={ref}>
-      {filtred.map(({ id, description, status }, index) => (
+      {filtred.map((item, index) => (
         <Draggable<typeof draft>
-          key={id}
-          index={index}
+          key={item.id}
+          index={draft.findIndex(({ id }) => id === item.id) || index}
           toggleItems={toggleDraft}
           onDragEnd={onDragEnd}
         >
           <Card>
-            <Todo id={id} description={description} status={status} />
+            <Todo
+              id={item.id}
+              description={item.description}
+              status={item.status}
+            />
           </Card>
         </Draggable>
       ))}
