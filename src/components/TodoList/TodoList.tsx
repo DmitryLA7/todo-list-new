@@ -8,6 +8,7 @@ import Todo from "../Todo";
 import Draggable from "../Draggable";
 
 import TodoListData from "@/utils/todoData";
+import useUserScroll from "@/hooks/useUserScroll";
 
 import type { TodoListProps } from "./types";
 
@@ -20,6 +21,7 @@ const TodoList = ({ filter }: TodoListProps) => {
   const [draft, setDraft] = useState<typeof todos>([]);
 
   const ref = useRef<HTMLDivElement>(null);
+  const isDraggingBlocked = useUserScroll();
 
   useEffect(() => {
     setDraft(todos);
@@ -47,6 +49,7 @@ const TodoList = ({ filter }: TodoListProps) => {
           index={draft.findIndex(({ id }) => id === item.id) || index}
           toggleItems={toggleDraft}
           onDragEnd={onDragEnd}
+          dragBlocked={isDraggingBlocked}
         >
           <Card>
             <Todo

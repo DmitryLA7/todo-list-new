@@ -4,6 +4,7 @@ import {
   useRef,
   useState,
   type MouseEvent,
+  useEffect,
 } from "react";
 
 import { StyledDraggable } from "./styles";
@@ -18,30 +19,28 @@ const Draggable = <Items extends unknown[]>({
   index,
   toggleItems,
   onDragEnd,
+  dragBlocked,
 }: PropsWithChildren<{
   index: number;
   toggleItems: (callback: (t: Items) => Items) => void;
   onDragEnd: () => void;
+  dragBlocked: boolean;
 }>) => {
   const [isDragging, setIsDragging] = useState(false);
   const [coords, setCoords] = useState<{ x: number; y: number }>(INIT_COORDS);
   const ref = useRef<HTMLDivElement>(null);
   const initElementCoordsRef = useRef<{ x: number; y: number }>(INIT_COORDS);
+  const timerRef = useRef<NodeJS.Timeout>(null);
 
-  const onMouseDown = ({
-    pageX,
-    pageY,
-  }: SynteticMouseEvent<HTMLDivElement>) => {
-    if (window.getSelection()?.toString()) return;
+  const onDragStart = ({ pageX, pageY }: { pageX: number; pageY: number }) => {
+    if (window.getSelection()?.toString() || dragBlocked) return;
 
     initElementCoordsRef.current = { x: pageX, y: pageY };
-    toggleCaptured();
+    setIsDragging(true);
   };
 
-  const toggleCaptured = () => setIsDragging((p) => !p);
-
-  const onMouseMove = ({ pageX, pageY }: MouseEvent) => {
-    if (!isDragging) return;
+  const onDragMove = ({ pageX, pageY }: { pageX: number; pageY: number }) => {
+    if (!isDragging || dragBlocked) return;
     const nextSibling = ref.current?.nextSibling as HTMLElement;
     const prevSibling = ref.current?.previousSibling as HTMLElement;
 
@@ -80,7 +79,7 @@ const Draggable = <Items extends unknown[]>({
     };
   };
 
-  const onMouseUp = () => {
+  const handleOnDragEnd = () => {
     resetDrag();
     onDragEnd();
   };
@@ -90,17 +89,65 @@ const Draggable = <Items extends unknown[]>({
 
     initElementCoordsRef.current = INIT_COORDS;
 
-    toggleCaptured();
+    setIsDragging(false);
     setCoords(INIT_COORDS);
   };
+
+  useEffect(() => {
+    if (isDragging && !dragBlocked) {
+      window.addEventListener("touchmove", preventTouchScroll, {
+        passive: false,
+      });
+
+      return () => {
+        window.removeEventListener("touchmove", preventTouchScroll);
+      };
+    }
+  }, [isDragging, dragBlocked]);
+
+  const preventTouchScroll = (e: TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    return false;
+  };
+
+  const handleToucheStart = ({
+    pageX,
+    pageY,
+  }: {
+    pageX: number;
+    pageY: number;
+  }) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    timerRef.current = setTimeout(() => {
+      console.log("lets roll");
+      onDragStart({ pageX, pageY });
+    }, 300);
+  };
+
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+  }, [dragBlocked]);
 
   return (
     <StyledDraggable
       ref={ref}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onDrag={onMouseDown}
-      onMouseMove={onMouseMove}
+      onMouseDown={onDragStart}
+      onTouchStart={(e) =>
+        handleToucheStart({
+          pageX: e.touches[0].pageX,
+          pageY: e.touches[0].pageY,
+        })
+      }
+      onMouseMove={isDragging ? onDragMove : undefined}
+      onTouchMove={(e) => {
+        onDragMove({ pageX: e.touches[0].pageX, pageY: e.touches[0].pageY });
+      }}
+      onTouchEnd={handleOnDragEnd}
+      onMouseUp={handleOnDragEnd}
+      onMouseLeave={handleOnDragEnd}
       $captured={isDragging}
       $x={coords.x}
       $y={coords.y}

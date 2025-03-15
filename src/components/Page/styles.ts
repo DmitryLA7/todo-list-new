@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 
-
 import { device } from "@/styles/breakpoints";
 import { PADDINGS } from "@/styles/containers";
 
