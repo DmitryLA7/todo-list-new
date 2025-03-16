@@ -14,6 +14,7 @@ export const Input = styled.input<{ $width: number }>`
     max-width: 100%;
     font-size: 16px;
     font-family: inherit;
+    font-size: inherit;
     width: ${props => props.$width}px;
 `
 

@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 
 import type { TodoStatus } from "@/types/todo";
+import { device } from "@/styles/breakpoints";
 
 export const Wrapper = styled.div`
     display: flex;
@@ -60,3 +61,11 @@ const DESCRIPTION_STATUS: Partial<{ [key in TodoStatus]: ReturnType<typeof css> 
         text-decoration:  line-through;
     `,
 }
+
+export const pageTitle = css`
+   font-size: 16px;
+
+    @media ${device.tablet} {
+       font-size: 20px
+    }
+`

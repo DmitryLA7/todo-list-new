@@ -111,7 +111,7 @@ const Draggable = <Items extends unknown[]>({
           })
         }
       >
-        <Image layout="fixed" alt="" src={iconDrag} width={19} height={19} />
+        <Image alt="" src={iconDrag} width={19} height={19} />
       </IconDrag>
     </StyledDraggable>
   );

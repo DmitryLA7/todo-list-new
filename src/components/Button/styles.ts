@@ -80,6 +80,7 @@ export const StyledButton = styled.button<{ $colorScheme: NonNullable<ButtonProp
   transition: color 0.2s ease-in, background-color 0.2s ease-in, border-color 0.2s ease-in;
   cursor: pointer;
   font-family: inherit;
+  font-size: inherit;
 
   &:disabled {
     background-color: #fff;
