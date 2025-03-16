@@ -41,7 +41,7 @@ const Todo = ({ id, description, status }: TodoProps) => {
             onClick={() => dispatch(toggleStatus(id))}
           />
           {edited ? (
-            <ResizableInput value={draftDescr} onChangeValue={setDraftDescr} />
+            <ResizableInput value={draftDescr} onChangeValue={setDraftDescr} defaultValue={description} />
           ) : (
             <Description $status={status}>{description}</Description>
           )}

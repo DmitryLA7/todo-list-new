@@ -10,7 +10,7 @@ export const Input = styled.input<{ $width: number }>`
     border-bottom: 1px solid;
     border-color: #878787;
     outline: none;
-    min-width: 100px;
+    min-width: 150px;
     max-width: 100%;
     font-size: 16px;
     font-family: inherit;

@@ -1,1 +1,1 @@
-export type ResizableInputProps = { value: string; onChangeValue: (s: string) => void }
+export type ResizableInputProps = { value: string; onChangeValue: (s: string) => void; defaultValue: string }
