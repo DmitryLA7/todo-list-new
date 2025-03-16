@@ -37,7 +37,21 @@ export const Sticky = styled.div`
         margin-left: -${PADDINGS.xl}px;
         padding: 0 ${PADDINGS.xl}px;
         padding-top: ${PADDINGS.xl}px;
-        padding-bottom: 20px;
+        width: calc(100% + ${PADDINGS.xl * 2}px);
+    }
+`
+
+export const TodosListWrapper = styled.div`
+    padding: ${PADDINGS.sm}px;
+    padding-top: 20px;
+    margin: 0 -${PADDINGS.sm}px;
+    width: calc(100% + ${PADDINGS.sm * 2}px);
+    overflow: hidden;
+
+    @media ${device.tablet} { 
+        padding: ${PADDINGS.xl}px;
+        padding-top: ${PADDINGS.xl}px;
+        margin: 0 -${PADDINGS.xl}px;
         width: calc(100% + ${PADDINGS.xl * 2}px);
     }
 `

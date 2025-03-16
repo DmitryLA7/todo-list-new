@@ -5,7 +5,7 @@ import { device } from "@/styles/breakpoints";
 export const StyledDraggable = styled.div<{ $x: number, $y: number, $captured: boolean }>`
     position: relative;
 
-    ${props => props.$captured ? { top: props.$y, left: props.$x, userSelect: 'none', zIndex: 2 } : undefined}
+    ${props => props.$captured ? { top: props.$y, left: props.$x, userSelect: 'none', zIndex: 1 } : undefined}
 `
 
 export const IconDrag = styled.div`

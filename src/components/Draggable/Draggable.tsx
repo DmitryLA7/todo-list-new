@@ -34,10 +34,9 @@ const Draggable = <Items extends unknown[]>({
   };
 
   const onDragMove = ({ pageX, pageY }: { pageX: number; pageY: number }) => {
-    if (!isDragging || dragBlocked) return;
-    const nextSibling = ref.current?.nextSibling as HTMLElement;
-    const prevSibling = ref.current?.previousSibling as HTMLElement;
-
+    if (!isDragging || dragBlocked || !ref.current) return;
+    const nextSibling = ref.current.nextSibling as HTMLElement;
+    const prevSibling = ref.current.previousSibling as HTMLElement;
     if (
       nextSibling &&
       isOffsetToMiddleOfSibling(nextSibling)((v) => pageY >= v)
