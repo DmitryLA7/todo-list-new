@@ -21,7 +21,7 @@ const Page = () => {
             Список дел
           </Title>
           <AddTodo styles={addTodo} />
-          <Filters onClick={setStatus} />
+          <Filters onClick={setStatus} activeStatus={status} />
         </Sticky>
         <TodoList filter={status} />
       </Layout>

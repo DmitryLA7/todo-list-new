@@ -8,10 +8,17 @@ const Button = ({
   children,
   colorScheme = "default",
   styles,
+  isActive,
   ...props
 }: ButtonProps) => {
   return (
-    <StyledButton {...props} $colorScheme={colorScheme} $styles={styles}>
+    <StyledButton
+      {...props}
+      className={isActive ? "active" : ""}
+      $colorScheme={colorScheme}
+      $styles={styles}
+      $activeCLassName={isActive ? "active" : ""}
+    >
       {children}
     </StyledButton>
   );

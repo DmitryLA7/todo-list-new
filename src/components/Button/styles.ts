@@ -2,17 +2,18 @@ import styled, { css } from "styled-components";
 
 import type { ButtonProps } from "./types";
 
-const SCHEMES: Record<NonNullable<ButtonProps['colorScheme']>, ReturnType<typeof css>> = {
+const SCHEMES: ($activeCLassName?: string) => Record<NonNullable<ButtonProps['colorScheme']>, ReturnType<typeof css>> = ($activeCLassName
+) => ({
   default: css`
     border-color: #30324B;
-    color: '#30324B';
+    color: #30324B;
 
-    &:active {
+    &:active, &.${$activeCLassName} {
       background-color: #30324B;
       color: #fff;
     };
 
-    &:not(:active) {
+    &:not(:active, .${$activeCLassName}) {
       &:focus {
         background-color: #30324B;
         border-color: #A4A4A4;
@@ -28,12 +29,12 @@ const SCHEMES: Record<NonNullable<ButtonProps['colorScheme']>, ReturnType<typeof
     border-color: #6AD400;
     color: #6AD400;
 
-    &:active {
+    &:active, &.${$activeCLassName} {
       background-color: #6AD400;
       color: #fff;
     };
 
-    &:not(:active) {
+    &:not(:active, .${$activeCLassName}) {
       &:hover {
         background-color: #CEFF9D;
         color: #6AD400;
@@ -50,12 +51,12 @@ const SCHEMES: Record<NonNullable<ButtonProps['colorScheme']>, ReturnType<typeof
     border-color: #FF2F2F;
     color: #FF2F2F;
 
-    &:active {
+    &:active, &.${$activeCLassName} {
       background-color: #FF2F2F;
       color: #fff;
     };
 
-    &:not(:active) {
+    &:not(:active, .${$activeCLassName}) {
       &:hover {
         background-color: #FFB8B8;
         color: #FF2F2F;
@@ -68,9 +69,9 @@ const SCHEMES: Record<NonNullable<ButtonProps['colorScheme']>, ReturnType<typeof
       }
     }
   `
-}
+})
 
-export const StyledButton = styled.button<{ $colorScheme: NonNullable<ButtonProps['colorScheme']>; $styles?: ButtonProps['styles'] }>`
+export const StyledButton = styled.button<{ $colorScheme: NonNullable<ButtonProps['colorScheme']>; $styles?: ButtonProps['styles']; $activeCLassName?: string }>`
   padding: 10px 15px;
   background-color: transparent;
   border: 2px solid;
@@ -78,6 +79,7 @@ export const StyledButton = styled.button<{ $colorScheme: NonNullable<ButtonProp
   outline: none;
   transition: color 0.2s ease-in, background-color 0.2s ease-in, border-color 0.2s ease-in;
   cursor: pointer;
+  font-family: inherit;
 
   &:disabled {
     background-color: #fff;
@@ -85,6 +87,6 @@ export const StyledButton = styled.button<{ $colorScheme: NonNullable<ButtonProp
     color: #F2F3F5;
   }
 
-  ${(props) => SCHEMES[props.$colorScheme]}
+  ${(props) => SCHEMES(props.$activeCLassName)[props.$colorScheme]}
   ${(props) => props.$styles}
 `;
